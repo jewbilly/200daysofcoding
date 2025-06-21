@@ -1,0 +1,52 @@
+import math
+
+# Maximum number of iterations
+N = 500
+
+# Tolerance level
+TOL = 1e-6
+
+# Define the function
+def fval(x):
+    return 4 * x + math.sin(x) - math.exp(x)
+
+# Define the derivative
+def dfval(x):
+    return 4 + math.cos(x) - math.exp(x)
+
+# Initial guess from user
+x0 = float(input("Enter the initial approximation: "))
+
+print("iter.\t        xk\t\t       f(xk)\t\t     Error")
+
+# Initialization
+xk = x0
+fxk = fval(xk)
+
+# Newton-Raphson iteration loop
+for k in range(1, N + 1):
+    xp = xk
+    fxp = fxk
+    dfxp = dfval(xp)
+
+    # Avoid division by zero
+    if dfxp == 0:
+        print("Zero derivative. No solution found.")
+        break
+
+    # Newton-Raphson formula
+    xk = xp - (fxp / dfxp)
+    fxk = fval(xk)
+
+    # Relative error
+    err = abs(xk - xp) / abs(xk)
+
+    # Print iteration
+    print(f"{k}\t{xk:.16f}\t{fxk:.16f}\t{err:.12f}")
+
+    # Check for convergence
+    if err < TOL:
+        print("\nRequired accuracy achieved; Solution is convergent.")
+        break
+else:
+    print("\nThe Number of iterations exceeded the maximum limit.")
